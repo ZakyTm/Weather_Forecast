@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:weather_forecast/ui/home_page.dart';
 import 'package:http/http.dart' as http;
 
-
-
 void main() {
   runApp(const MyApp());
 }
@@ -37,18 +35,40 @@ class _MyAppState extends State<MyApp> {
   String searchWeatherAPI =
       'https://api.weatherapi.com/v1/current.json?key=$API_Key&days=7&q=';
 
-
   void fetchWeatherData(String searchText) async {
-    try{
-        var searchResult = await http.get(Uri.parse(searchWeatherAPI + searchText));
+    try {
+      var searchResult =
+          await http.get(Uri.parse(searchWeatherAPI + searchText));
 
+      final weatherData = Map<String, dynamic>.from(
+          json.decode(searchResult.body) ?? 'No data');
 
-        final weatherData = Map<String, dynamic>.from(json.decode(searchResult.body)?? 'No data');
+      var locationData = weatherData['location'];
 
+      var currentData = weatherData['current'];
 
-        var locationData = weatherData ['location'];
-        
+      setState(() {
+        location = locationData["name"];
+
+        print(location);
+      });
+    } catch (e) {
+      //print(e);
     }
+  }
+
+  static String getShortLocationName(String s) {
+    List<String> wordList = s.split("");
+
+    if (wordList.isNotEmpty) {
+      if (wordList.length > 1) {}
+    }
+  }
+
+  @override
+  void initState() {
+    fetchWeatherData(location);
+    super.initState();
   }
 
   @override
