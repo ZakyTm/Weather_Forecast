@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
 
   final Constants _constants = Constants();
   static String API_Key = 'abf1117e552c4f9d9d1143140241108';
-  String location = 'Tizi Ouzo';
+  String location = 'algiers';
   String weatherIcon = 'heavycloudy.png';
   int temperature = 0;
   int windSpeed = 0;
@@ -246,7 +246,54 @@ class _HomePageState extends State<HomePage> {
                               foreground: Paint()..shader = _constants.shader),
                         ),
                       ),
+                      Text(
+                        '°C',
+                        style: TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                            foreground: Paint()..shader = _constants.shader),
+                      ),
                     ],
+                  ),
+                  Text(
+                    currentWeatherStatus, //current weather status
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(
+                    currentDate, //current weather status
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 20,
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: const Divider(
+                      color: Colors.white70,
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Image.asset('assets/heavyrain.png'),
+                        ),
+                        const SizedBox(
+                          height: 8.0,
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),
