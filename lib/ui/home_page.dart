@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 
@@ -187,12 +188,40 @@ class _HomePageState extends State<HomePage> {
                                                   },
                                                   controller: _cityController,
                                                   autofocus: true,
+                                                  decoration: InputDecoration(
+                                                    prefixIcon: Icon(
+                                                      Icons.search,
+                                                      color: _constants
+                                                          .primaryColor,
+                                                    ),
+                                                    suffixIcon: GestureDetector(
+                                                      onTap: () =>
+                                                          _cityController
+                                                              .clear(),
+                                                      child: Icon(Icons.close,
+                                                          color: _constants
+                                                              .primaryColor),
+                                                    ),
+                                                    hintText:
+                                                        'Search city e.g. Tizi Ouzo',
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color: _constants
+                                                            .primaryColor,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  ),
                                                 ),
                                               ]),
                                             ),
                                           ));
                                 },
-                                icon: const Icon(Icons.arrow_drop_down)),
+                                icon: const Icon(Icons.keyboard_arrow_down,
+                                    color: Colors.white)),
                           ],
                         ),
                       ],
