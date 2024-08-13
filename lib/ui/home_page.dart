@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
 
   final Constants _constants = Constants();
   static String API_Key = 'abf1117e552c4f9d9d1143140241108';
-  String location = 'Boumerdes';
+  String location = 'Tizi Ouzo';
   String weatherIcon = 'heavycloudy.png';
   int temperature = 0;
   int windSpeed = 0;
@@ -106,129 +106,154 @@ class _HomePageState extends State<HomePage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
-          width: size.width,
-          height: size.height,
-          padding: const EdgeInsets.only(top: 70, left: 10, right: 10),
-          color: _constants.primaryColor.withOpacity(0.1),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  height: size.height * .7,
-                  decoration: BoxDecoration(
-                    gradient: _constants.linearGradientBlue,
-                    boxShadow: [
-                      BoxShadow(
-                        color: _constants.primaryColor.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: const Offset(0, 3),
+        width: size.width,
+        height: size.height,
+        padding: const EdgeInsets.only(top: 70, left: 10, right: 10),
+        color: _constants.primaryColor.withOpacity(0.1),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              height: size.height * .7,
+              decoration: BoxDecoration(
+                gradient: _constants.linearGradientBlue,
+                boxShadow: [
+                  BoxShadow(
+                    color: _constants.primaryColor.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/menu.png",
+                        width: 40,
+                        height: 40,
                       ),
-                    ],
-                    borderRadius: BorderRadius.circular(20),
-                  )),
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          "assets/menu.png",
-                          width: 40,
-                          height: 40,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset("assets/pin.png", width: 20),
-                            const SizedBox(width: 2),
-                            Text(
-                              location,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 16.0),
-                            ),
-                            IconButton(
-                                onPressed: () {
-                                  _cityController.clear();
-                                  showMaterialModalBottomSheet(
-                                      context: context,
-                                      builder: (context) =>
-                                          SingleChildScrollView(
-                                            controller:
-                                                ModalScrollController.of(
-                                                    context),
-                                            child: Container(
-                                              height: size.height * .2,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 20,
-                                                vertical: 10,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset("assets/pin.png", width: 20),
+                          const SizedBox(width: 2),
+                          Text(
+                            location,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16.0),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                _cityController.clear();
+                                showMaterialModalBottomSheet(
+                                    context: context,
+                                    builder: (context) => SingleChildScrollView(
+                                          controller:
+                                              ModalScrollController.of(context),
+                                          child: Container(
+                                            height: size.height * .2,
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 20,
+                                              vertical: 10,
+                                            ),
+                                            child: Column(children: [
+                                              SizedBox(
+                                                width: 70,
+                                                child: Divider(
+                                                  thickness: 3.5,
+                                                  color:
+                                                      _constants.primaryColor,
+                                                ),
                                               ),
-                                              child: Column(children: [
-                                                SizedBox(
-                                                  width: 70,
-                                                  child: Divider(
-                                                    thickness: 3.5,
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              TextField(
+                                                onChanged: (searchText) {
+                                                  fetchWeatherData(searchText);
+                                                },
+                                                controller: _cityController,
+                                                autofocus: true,
+                                                decoration: InputDecoration(
+                                                  prefixIcon: Icon(
+                                                    Icons.search,
                                                     color:
                                                         _constants.primaryColor,
                                                   ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 10,
-                                                ),
-                                                TextField(
-                                                  onChanged: (searchText) {
-                                                    fetchWeatherData(
-                                                        searchText);
-                                                  },
-                                                  controller: _cityController,
-                                                  autofocus: true,
-                                                  decoration: InputDecoration(
-                                                    prefixIcon: Icon(
-                                                      Icons.search,
+                                                  suffixIcon: GestureDetector(
+                                                    onTap: () =>
+                                                        _cityController.clear(),
+                                                    child: Icon(Icons.close,
+                                                        color: _constants
+                                                            .primaryColor),
+                                                  ),
+                                                  hintText:
+                                                      'Search city e.g. Tizi Ouzo',
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                    borderSide: BorderSide(
                                                       color: _constants
                                                           .primaryColor,
                                                     ),
-                                                    suffixIcon: GestureDetector(
-                                                      onTap: () =>
-                                                          _cityController
-                                                              .clear(),
-                                                      child: Icon(Icons.close,
-                                                          color: _constants
-                                                              .primaryColor),
-                                                    ),
-                                                    hintText:
-                                                        'Search city e.g. Tizi Ouzo',
-                                                    focusedBorder:
-                                                        OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: _constants
-                                                            .primaryColor,
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
                                                   ),
                                                 ),
-                                              ]),
-                                            ),
-                                          ));
-                                },
-                                icon: const Icon(Icons.keyboard_arrow_down,
-                                    color: Colors.white)),
-                          ],
+                                              ),
+                                            ]),
+                                          ),
+                                        ));
+                              },
+                              icon: const Icon(Icons.keyboard_arrow_down,
+                                  color: Colors.white)),
+                        ],
+                      ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          "assets/profile.png",
+                          width: 40,
+                          height: 40,
                         ),
-                      ],
-                    ),
-                  ]),
-            ],
-          )),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 160,
+                    child: Image.asset("assets/$weatherIcon"),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text(
+                          temperature.toString(),
+                          style: TextStyle(
+                              fontSize: 80,
+                              fontWeight: FontWeight.bold,
+                              foreground: Paint()..shader = _constants.shader),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
