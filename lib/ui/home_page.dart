@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:weather_forecast/constants.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +16,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // This widget is the root of your application.
+  final TextEditingController _cityController = TextEditingController();
+
   final Constants _constants = Constants();
   static String API_Key = 'abf1117e552c4f9d9d1143140241108';
   String location = 'Boumerdes';
@@ -125,6 +128,76 @@ class _HomePageState extends State<HomePage> {
                     ],
                     borderRadius: BorderRadius.circular(20),
                   )),
+              Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/menu.png",
+                          width: 40,
+                          height: 40,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset("assets/pin.png", width: 20),
+                            const SizedBox(width: 2),
+                            Text(
+                              location,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 16.0),
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  _cityController.clear();
+                                  showMaterialModalBottomSheet(
+                                      context: context,
+                                      builder: (context) =>
+                                          SingleChildScrollView(
+                                            controller:
+                                                ModalScrollController.of(
+                                                    context),
+                                            child: Container(
+                                              height: size.height * .2,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 20,
+                                                vertical: 10,
+                                              ),
+                                              child: Column(children: [
+                                                SizedBox(
+                                                  width: 70,
+                                                  child: Divider(
+                                                    thickness: 3.5,
+                                                    color:
+                                                        _constants.primaryColor,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                TextField(
+                                                  onChanged: (searchText) {
+                                                    fetchWeatherData(
+                                                        searchText);
+                                                  },
+                                                  controller: _cityController,
+                                                  autofocus: true,
+                                                ),
+                                              ]),
+                                            ),
+                                          ));
+                                },
+                                icon: const Icon(Icons.arrow_drop_down)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ]),
             ],
           )),
     );
