@@ -1,9 +1,6 @@
-import 'dart:collection';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+
 import 'dart:convert';
 import 'package:intl/intl.dart';
 
@@ -25,7 +22,7 @@ class _HomePageState extends State<HomePage> {
 
   final Constants _constants = Constants();
   static String API_Key = 'abf1117e552c4f9d9d1143140241108';
-  String location = 'algiers';
+  String location = 'Tipaza';
   String weatherIcon = 'heavycloudy.png';
   int temperature = 0;
   int windSpeed = 0;
@@ -274,7 +271,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: const Divider(
                       color: Colors.white70,
                     ),
@@ -312,23 +309,124 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Today',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.0,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => print('Tapped'),
-                    child: Text(
-                      'Forecast',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                        color: _constants.primaryColor,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Today',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0,
+                        ),
                       ),
-                    ), // this will open forecast screen
+                      GestureDetector(
+                        onTap: () =>
+                            print('Tapped'), // this will open forecast screen
+                        child: Text(
+                          'Forecast',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: _constants.primaryColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    height: 110,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: hourlyWeatherForecast.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        String currentTime =
+                            DateFormat('HH:mm"ss').format(DateTime.now());
+                        String currentHour = currentTime.substring(0, 2);
+
+                        String forecastTime = hourlyWeatherForecast[index]
+                                ['time']
+                            .substring(11, 16);
+
+                        String forecastHour = hourlyWeatherForecast[index]
+                                ['time']
+                            .substring(11, 13);
+
+                        String forecastWeatherName =
+                            hourlyWeatherForecast[index]['condition']['text'];
+
+                        String forecastWeatherIcon = forecastWeatherName
+                                .replaceAll(' ', ' ')
+                                .toLowerCase() +
+                            ".png";
+
+                        String forecastTemperature =
+                            hourlyWeatherForecast[index]['temp_c']
+                                .round()
+                                .toString();
+
+                        return Container(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          margin: const EdgeInsets.only(right: 20),
+                          width: 65,
+                          decoration: BoxDecoration(
+                            color: currentHour == forecastHour
+                                ? Colors.white
+                                : _constants.primaryColor,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(50),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                offset: const Offset(0, 1),
+                                color: _constants.primaryColor.withOpacity(.2),
+                              )
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                forecastTime,
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: _constants.greyColor,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Image.asset(
+                                'assets/$forecastWeatherIcon',
+                                width: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    forecastTemperature,
+                                    style: TextStyle(
+                                      color: _constants.greyColor,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Text(
+                                    'o',
+                                    style: TextStyle(
+                                      color: _constants.greyColor,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w600,
+                                      fontFeatures: const [
+                                        FontFeature.enable('sups')
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
