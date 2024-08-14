@@ -1,3 +1,6 @@
+import 'dart:collection';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -6,6 +9,7 @@ import 'package:intl/intl.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:weather_forecast/components/wather_item.dart';
 import 'package:weather_forecast/constants.dart';
 
 class HomePage extends StatefulWidget {
@@ -275,58 +279,62 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white70,
                     ),
                   ),
-                  WeatherItem(),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        WeatherItem(
+                          value: windSpeed.toInt(),
+                          unit: 'km/h',
+                          imageUrl: 'assets/windspeed.png',
+                        ),
+                        WeatherItem(
+                          value: humidity.toInt(),
+                          unit: '%',
+                          imageUrl: 'assets/humidity.png',
+                        ),
+                        WeatherItem(
+                          value: cloud.toInt(),
+                          unit: '%',
+                          imageUrl: 'assets/cloud.png',
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(top: 10),
+              height: size.height * .2,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Today',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => print('Tapped'),
+                    child: Text(
+                      'Forecast',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: _constants.primaryColor,
+                      ),
+                    ), // this will open forecast screen
+                  ),
                 ],
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class WeatherItem extends StatelessWidget {
-  final int value;
-  final String text;
-  final String unit;
-  final String imageUrl;
-
-  const WeatherItem({
-    super.key,
-    required this.value,
-    required this.text,
-    required this.unit,
-    required this.imageUrl,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            height: 60,
-            width: 60,
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Image.asset('imageUrl'),
-          ),
-          const SizedBox(
-            height: 8.0,
-          ),
-          Text(
-            value.toString() + unit,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-        ],
       ),
     );
   }
